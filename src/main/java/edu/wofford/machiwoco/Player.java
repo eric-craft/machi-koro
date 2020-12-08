@@ -163,21 +163,6 @@ public class Player {
         }
     }
 
-    /**
-     * Counts the number of Red cards owned by a Player.
-     * @return an integer representing the number of Red cards owned by a Player.
-     */
-
-   protected int countNumberOfReds() {
-       Set<Establishment> keys = estOwned.keySet();
-       int count=0;
-       for (Establishment e : keys) {
-           if (e.getColor_ab().equals("R")){
-               count++;
-           }
-       }
-       return count;
-   }
 
 //   protected boolean isShoppingMallConstructed() {
 //       return sh

@@ -79,22 +79,4 @@ public class ActivationObserver extends Observer {
     }
 
 
-    /**
-     * Returns the total number of Red cards owned by inactive Players.
-     * @return an integer representing the total number of Red cards owned by inactive Players.
-     */
-
-    private int redCheck() {
-        ArrayList<Player> players = diceSubject.getPlayers();
-        Player activePlayer = diceSubject.getActivePlayer();
-        int count = 0;
-        for(Player p: players) {
-            if(!p.equals(activePlayer)) {
-                count += p.countNumberOfReds();
-            }
-        }
-        return count;
-    }
-
-
 }
