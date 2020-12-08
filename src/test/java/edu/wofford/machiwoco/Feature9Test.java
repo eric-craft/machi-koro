@@ -517,7 +517,167 @@ public class Feature9Test {
         assertThat(feature9.rollTwo(), Matchers.either(Matchers.is(true)).or(Matchers.is(false)));
     }
 
+    @Test
+    public void testStadiumOwned() {
+        feature9.player1.getEstOwned().put(feature9.getStadium(), 1);
+        assertThat(feature9.player1.isStadiumOwned(), is(true));
+    }
 
+    @Test
+    public void testBusinessOwned() {
+        feature9.player1.getEstOwned().put(feature9.getBusiness(), 1);
+        assertThat(feature9.player1.isBusinessComplexOwned(), is(true));
+    }
+
+    @Test
+    public void testTVOwned() {
+        feature9.player1.getEstOwned().put(feature9.getTvStation(), 1);
+        assertThat(feature9.player1.isTVStationOwned(feature9.player1.getEstOwned()), is(true));
+    }
+
+    @Test
+    public void testShoppingMallNotConstructed() {
+        assertThat(feature9.player1.isShoppingMallConstructed(), is(false));
+    }
+
+    @Test
+    public void testTVConstructed() {
+        feature9.player1.getEstOwned().put(feature9.getTvStation(), 1);
+        assertThat(feature9.player1.isTVStationConstructed(), is(true));
+    }
+
+    @Test
+    public void testTVNotConstructed() {
+        assertThat(feature9.player1.isTVStationConstructed(), is(false));
+    }
+
+    @Test
+    public void testAmusementConstructed() {  
+        Landmark l = feature9.player1.getLandmarks()[2]; 
+        feature9.player1.setCoinCount(16);
+        feature9.player1.setTurn(true);
+        feature9.player1.buyLandmark(l);
+        assertThat(feature9.player1.isAmusementConstructed(), is(true));
+    }
+
+    @Test
+    public void testAmusementNotConstructed() {   
+        assertThat(feature9.player1.isAmusementConstructed(), is(false));
+    }
+
+    // @Test
+    // public void testNumReds() {
+    //     feature9.player1.getEstOwned().put(feature9.getCafe(), 5);
+    //     assertThat(feature9.player1.countNumberOfReds(), is(5));
+    // }
+
+    @Test
+    public void testRemoveCard() {
+        Map<Establishment, Integer> ogMarket = feature9.player1.getEstOwned();
+        Map<Establishment, Integer> marketCafe = feature9.player1.getEstOwned();
+        marketCafe.put(feature9.getCafe(), 1);
+        feature9.player1.getEstOwned().put(feature9.getCafe(), 1);
+        assertThat(feature9.player1.getEstOwned(), is(marketCafe));
+        feature9.player1.removeCard(feature9.getCafe());
+        assertThat(feature9.player1.getEstOwned(), is(ogMarket));
+    }
+
+    @Test
+    public void testRemoveCardMoreThan1Owned() {
+        Map<Establishment, Integer> ogMarket = feature9.player1.getEstOwned();
+        Map<Establishment, Integer> marketCafe = feature9.player1.getEstOwned();
+        marketCafe.put(feature9.getCafe(), 2);
+        ogMarket.put(feature9.getCafe(), 1);
+        feature9.player1.getEstOwned().put(feature9.getCafe(), 2);
+        assertThat(feature9.player1.getEstOwned(), is(marketCafe));
+        feature9.player1.removeCard(feature9.getCafe());
+        assertThat(feature9.player1.getEstOwned(), is(ogMarket));
+    }
+
+    @Test
+    public void testRemoveCardVoid() {
+        Map<Establishment, Integer> ogMarket = feature9.player1.getEstOwned();
+        feature9.player1.removeCard(feature9.getCafe());
+        assertThat(feature9.player1.getEstOwned(), is(ogMarket));
+    }
+
+    @Test
+    public void testPeekIconCow() {
+        feature9.player1.getEstOwned().put(feature9.getCheeseFactory(), 1);
+        feature9.player1.getEstOwned().put(feature9.getRanch(), 2);
+        assertThat(feature9.player1.peekActionIcon(feature9.getCheeseFactory(), 1), is(6));
+    }
+
+    @Test
+    public void testPeekIconGear() {
+        feature9.player1.getEstOwned().put(feature9.getFurnitureFactory(), 1);
+        feature9.player1.getEstOwned().put(feature9.getForest(), 2);
+        assertThat(feature9.player1.peekActionIcon(feature9.getFurnitureFactory(), 1), is(6));
+    }
+
+    @Test
+    public void testPeekIconWheat() {
+        feature9.player1.getEstOwned().put(feature9.getFarmersMarket(), 1);
+        feature9.player1.getEstOwned().put(feature9.getOrchard(), 2);
+        assertThat(feature9.player1.peekActionIcon(feature9.getFarmersMarket(), 1), is(6));
+    }
+
+    @Test
+    public void testPeekIconVoid() {
+        assertThat(feature9.player1.peekActionIcon(feature9.getCafe(), 1), is(0));
+    }
+
+    @Test
+    public void testPeekActivationFarmersMarket() {
+        feature9.player1.getEstOwned().put(feature9.getFarmersMarket(), 1);
+        feature9.player1.getEstOwned().put(feature9.getOrchard(), 2);
+        assertThat(feature9.player1.peekActivation(11, true), is(6));
+    }
+
+    @Test
+    public void testPeekActivationFamilyRestaurant() {
+        feature9.player1.getEstOwned().put(feature9.getFamilyRestaurant(), 1);
+        assertThat(feature9.player1.peekActivation(9, false), is(0));
+    }
+
+    @Test
+    public void testPeekActivationNoActivation() {
+        feature9.player1.getEstOwned().put(feature9.getFarmersMarket(), 1);
+        feature9.player1.getEstOwned().put(feature9.getOrchard(), 2);
+        assertThat(feature9.player1.peekActivation(12, true), is(6));
+    }
+
+    @Test
+    public void testPeekActivationWheat() {
+        assertThat(feature9.player1.peekActivation(1, true), is(1));
+    }
+
+    @Test
+    public void testPeekActivationBakery() {
+        feature9.player1.getEstOwned().put(feature9.getBakery(), 1);
+        assertThat(feature9.player1.peekActivation(3, true), is(1));
+    }
+
+    @Test
+    public void testPeekActivationBakeryNotTurn() {
+        feature9.player1.getEstOwned().put(feature9.getBakery(), 1);
+        assertThat(feature9.player1.peekActivation(3, false), is(0));
+    }
+
+    @Test
+    public void testPeekAction() {
+        Landmark l = feature9.player1.getLandmarks()[1];
+        feature9.player1.setCoinCount(20);
+        feature9.player1.setTurn(true);
+        feature9.player1.buyLandmark(l);
+        feature9.player1.setTurn(true);
+        assertThat(feature9.player1.peekAction(feature9.getBakery(), 1), is(2));
+    }
+
+    @Test
+    public void testBusComplexNotOwned() {
+        assertThat(feature9.player1.isBusinessComplexOwned(), is(false));
+    }
 
 
 //    @Test

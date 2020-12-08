@@ -246,10 +246,10 @@ public class Player {
 
     /**
      * Return true if TV Station is owned
-     * @param p The map of players
+     * @param p The map of establishments owned
      * @return boolean whether TV Station is owned
      */
-    public boolean isTVStationOwned(Map<Establishment,Integer> p) {
+    public boolean isTVStationOwned(Map<Establishment, Integer> p) {
         for (Establishment e : getEstOwned().keySet()) {
             if (e.getName().equals("TV Station")) {
                 return true;
@@ -454,8 +454,10 @@ public class Player {
      */
     public boolean isShoppingMallConstructed() {
         for (Landmark landmark : landmarks) {
-            if (landmark.getName().equals("Shopping Mall")) {
-                return landmark.getIsConstructed();
+            //if (landmark.getName().equals("Shopping Mall")) {
+            if (landmark.getName().equals("Shopping Mall") && landmark.getIsConstructed()) {
+                return true;
+                //return landmark.getIsConstructed();
             }
         }
         return false;
@@ -492,8 +494,10 @@ public class Player {
      */
     public boolean isAmusementConstructed() {
         for (Landmark landmark : landmarks) {
-            if (landmark.getName().equals("Amusement Park")) {
-                return landmark.getIsConstructed();
+            //if (landmark.getName().equals("Amusement Park")) {
+            if (landmark.getName().equals("Amusement Park") && landmark.getIsConstructed()) {
+                //return landmark.getIsConstructed();
+                return true;
             }
         }
         return false;
